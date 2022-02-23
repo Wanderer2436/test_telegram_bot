@@ -33,6 +33,9 @@ def handle_text(message):
     elif message.text.strip() == '/help':
         answer = 'Напишите /start чтобы вызвать меню или напишите:\nПогода\nКурс валют\nАнекдот '
         bot.send_message(message.chat.id, answer)
+    elif message.text.strip() == 'Привет':
+        bot.send_message(message.chat.id,
+                         'Привет, {0.first_name}!'.format(message.from_user, bot.get_me(), parse_mode='html'))
     else:
         bot.send_message(message.chat.id, 'Извините, я не понимаю, напишите /help, чтобы посмотреть команды')
 
