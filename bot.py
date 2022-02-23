@@ -58,4 +58,15 @@ def weather(message):
     start(message)
 
 
+def course(message):
+    response = requests.get('https://ru.investing.com/currencies/usd-rub')
+    bs = BeautifulSoup(response.text, "lxml")
+    dollar = bs.find('span', class_="text-2xl")
+    response2 = requests.get('https://ru.investing.com/currencies/eur-rub')
+    bs2 = BeautifulSoup(response2.text, "lxml")
+    euro = bs2.find('span', class_="text-2xl")
+    ans = 'Курс доллара: ' + str(dollar.text) + '\n' + 'Курс евро: ' + str(euro.text)
+    bot.send_message(message.chat.id, ans)
+
+
 bot.polling(none_stop=True, interval=0)
