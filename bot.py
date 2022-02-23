@@ -35,3 +35,27 @@ def handle_text(message):
         bot.send_message(message.chat.id, answer)
     else:
         bot.send_message(message.chat.id, 'Извините, я не понимаю, напишите /help, чтобы посмотреть команды')
+
+
+def weather(message):
+    try:
+        city = message.text
+        city = city + " weather"
+        city = city.replace(" ", "+")
+        res = requests.get(
+            f'https://www.google.com/search?q={city}&oq={city}&aqs=chrome.0.35i39l2j0l4j46j69i60.6128j1j7&sourceid'
+            f'=chrome&ie=UTF-8', headers=headers)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        location = soup.select('#wob_loc')[0].getText().strip()
+        time = soup.select('#wob_dts')[0].getText().strip()
+        info = soup.select('#wob_dc')[0].getText().strip()
+        wind = soup.select('#wob_ws')[0].getText().strip()
+        weather = soup.select('#wob_tm')[0].getText().strip()
+        answer = location + '\n' + time + '\n' + info + '\n' + wind + '\n' + weather + "°C"
+    except Exception:
+        answer = "Город не найден, попробуйте еще раз"
+    bot.send_message(message.chat.id, answer)
+    start(message)
+
+
+bot.polling(none_stop=True, interval=0)
