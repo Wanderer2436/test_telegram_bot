@@ -69,4 +69,17 @@ def course(message):
     bot.send_message(message.chat.id, ans)
 
 
+def joke(message):
+    connection = sqlite3.connect('anekdot.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT anekdot FROM anekdot ORDER BY RANDOM() LIMIT 1;')
+    row = cursor.fetchone()
+    bot.send_message(message.chat.id, row)
+
+
+@bot.message_handler(content_types=['sticker'])
+def get_text_messages(message):
+    bot.send_message(message.from_user.id, "Предпочитаю общаться текстом :)")
+
+
 bot.polling(none_stop=True, interval=0)
